@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 use App\Models\Task;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Tymon\JWTAuth\Facades\JWTAuth;
 
 class TaskController extends Controller
 {
@@ -20,9 +19,39 @@ class TaskController extends Controller
         $this->task = $task;
     }
 
-    public function all()
+    public function all($id = null)
     {
-        $data = $this->task->where('is_deleted', '0')->get();
+        $data = $this->task->where('is_deleted', '0')->with('user:id_user,username,name')->get();
+
+        return response()->json([
+            'code' => 200,
+            'success' => true,
+            'message' => 'Successfully Retrieve Data',
+            'data' => $data
+        ], 200);
+    }
+
+    public function getById($id = null)
+    {
+        $data = $this->task->where([
+            'id_task' => $id,
+            'is_deleted' => '0'
+        ])->get();
+
+        return response()->json([
+            'code' => 200,
+            'success' => true,
+            'message' => 'Successfully Retrieve Data',
+            'data' => $data
+        ], 200);
+    }
+
+    public function getByUser()
+    {
+        $data = $this->task->where([
+            'id_user' => auth()->user()['id_user'],
+            'is_deleted' => '0'
+        ])->get();
 
         return response()->json([
             'code' => 200,
@@ -67,5 +96,22 @@ class TaskController extends Controller
                 'data' => null
             ], 200);
         }
+    }
+
+    public function delete($id = null)
+    {
+        $data = $this->task->where([
+            'id_task' => $id,
+            'is_deleted' => '0'
+        ])->update([
+            'is_deleted' => '1'
+        ]);
+
+        return response()->json([
+            'code' => 200,
+            'success' => true,
+            'message' => 'Successfully Delete Data',
+            'data' => $data
+        ], 200);
     }
 }

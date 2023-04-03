@@ -38,9 +38,24 @@ $router->group(['prefix' => 'task', 'middleware' => 'auth:api'], function () use
         'uses' => 'TaskController@all'
     ]);
 
+    $router->get('/get/{id}', [
+        'as' => 'task.getById',
+        'uses' => 'TaskController@getById'
+    ]);
+
+    $router->get('/user', [
+        'as' => 'task.user',
+        'uses' => 'TaskController@getByUser'
+    ]);
+
     $router->post('/', [
         'as' => 'task.insert',
         'uses' => 'TaskController@insert'
+    ]);
+
+    $router->delete('/{id}', [
+        'as' => 'task.delete',
+        'uses' => 'TaskController@delete'
     ]);
 });
 
