@@ -37,6 +37,11 @@ $router->group(['prefix' => 'task', 'middleware' => 'auth:api'], function () use
         'as' => 'task.all',
         'uses' => 'TaskController@all'
     ]);
+
+    $router->post('/', [
+        'as' => 'task.insert',
+        'uses' => 'TaskController@insert'
+    ]);
 });
 
 
