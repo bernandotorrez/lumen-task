@@ -53,6 +53,11 @@ $router->group(['prefix' => 'task', 'middleware' => 'auth:api'], function () use
         'uses' => 'TaskController@insert'
     ]);
 
+    $router->put('/{id}', [
+        'as' => 'task.update',
+        'uses' => 'TaskController@update'
+    ]);
+
     $router->delete('/{id}', [
         'as' => 'task.delete',
         'uses' => 'TaskController@delete'
