@@ -100,14 +100,17 @@ class UserController extends Controller
         }
 
         if($isValidPassword) {
+            $token = Auth::login($user);
             return response()->json([
                 'code' => 200,
                 'success' => true,
                 'message' => 'Login Success',
                 'data' => [
-                    'id_user' => $user->id_user,
-                    'username' => $user->username,
-                    'name' => $user->name
+                    'token' => $token,
+                    'user' => [
+                        'username' => $user->username,
+                        'name' => $user->name,
+                    ]
                 ]
             ], 200);
         } else {
