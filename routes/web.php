@@ -26,3 +26,17 @@ $router->post('/login', [
     'as' => 'login',
     'uses' => 'UserController@login'
 ]);
+
+$router->post('/refresh', [
+    'as' => 'refresh',
+    'uses' => 'UserController@refresh'
+]);
+
+$router->group(['prefix' => 'task', 'middleware' => 'auth:api'], function () use ($router) {
+    $router->get('/', [
+        'as' => 'task.all',
+        'uses' => 'TaskController@all'
+    ]);
+});
+
+

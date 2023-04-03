@@ -79,7 +79,11 @@ class UserController extends Controller
             ], 400);
         }
 
-        $user = $this->user->where('username', $request->post('username'))->first();
+        $user = $this->user->where(
+            [
+                'username' => $request->post('username'),
+                'is_deleted' => '0'
+            ])->first();
         if(!$user) {
             return response()->json([
                 'code' => 200,
@@ -121,5 +125,17 @@ class UserController extends Controller
                 'data' => null
             ], 200);
         }
+    }
+
+    public function refresh()
+    {
+        return response()->json([
+            'code' => 200,
+            'success' => true,
+            'message' => 'Successfully Refresh Token',
+            'data' => [
+                'token' => Auth::refresh()
+            ]
+        ], 200);
     }
 }
